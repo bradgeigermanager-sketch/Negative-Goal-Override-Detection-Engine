@@ -1,0 +1,157 @@
+Core:  
+A formal evaluation‑engine framework that detects when an agent, system, or organization is pursuing a negative or adversarial goal (e.g., destroying an enemy, capturing a criminal) in a way that violates or undermines higher‑order positive goals (e.g., protecting people, preserving life, long‑term survival).  
+
+Below is a full, modular, DAG‑structured evaluation engine—compatible with your existing architectures (IIP‑IOSEFE, TBTF, FRA‑01, linkage engines)—that identifies goal‑priority violations, negative‑goal overreach, and mission drift toward harm.
+
+---
+
+⚖️ NEGATIVE‑GOAL OVERRIDE DETECTION ENGINE (NGODE)
+
+A DAG‑structured evaluation engine that determines whether an actor’s behavior, plan, or system is adhering to negative goals in violation of primary positive aims.
+
+---
+
+1. 🧭 Foundational Principle
+Negative goals (e.g., neutralize threat, capture target, destroy asset) are instrumental.  
+Positive goals (e.g., protect civilians, preserve life, ensure long‑term stability) are terminal.
+
+The engine evaluates whether the system is:
+- Over‑optimizing for the instrumental goal  
+- Undermining or violating the terminal goal  
+- Failing to detect conflicts between the two  
+- Rationalizing harmful actions under the guise of necessity  
+
+This is essentially a goal‑hierarchy integrity checker.
+
+---
+
+2. 🧩 Top‑Level DAG Structure
+
+Each bullet begins with a Guided Link, as required.
+
+2.1 Goal Hierarchy Extraction
+- Parse explicit goals, implicit goals, constraints, and mission statements  
+- Identify primary (positive) vs secondary (negative) goals  
+- Detect missing or ambiguous goal declarations  
+
+2.2 Positive‑Goal Integrity Model
+- Encode survival, safety, rights, and long‑term welfare as protected invariants  
+- Assign weights and non‑negotiable constraints  
+- Build a “cannot violate” rule set  
+
+2.3 Negative‑Goal Activation Monitor
+- Detect when negative goals become dominant  
+- Track escalation patterns  
+- Identify emotional, political, or situational triggers  
+
+2.4 Conflict Detection Layer
+- Compare predicted outcomes of negative‑goal pursuit vs positive‑goal preservation  
+- Identify contradictions, violations, or tradeoff inversions  
+- Flag “instrumental overreach”  
+
+2.5 Consequence Simulation Engine
+- Multi‑trajectory simulation  
+- Harm‑minimization scoring  
+- Civilian‑impact modeling  
+- Long‑term stability modeling  
+
+2.6 Violation Severity Scoring
+- Quantify degree of positive‑goal violation  
+- Score based on magnitude, duration, reversibility, and systemic impact  
+
+2.7 Override Detection Verdict
+- “No violation”  
+- “Minor drift”  
+- “Critical override”  
+- “Catastrophic inversion”  
+
+2.8 Remediation & Re‑alignment Module
+- Suggest alternative actions  
+- Re‑prioritize positive goals  
+- Re‑establish constraints  
+- Provide safe‑path recommendations  
+
+---
+
+3. 🔍 Key Analytical Concepts
+
+3.1 Goal‑Priority Inversion
+Occurs when:
+- Negative goal becomes the de facto primary goal  
+- Positive goal becomes conditional or ignored  
+- System rationalizes harm as “necessary”  
+
+3.2 Instrumental Overreach
+The system:
+- Pursues the negative goal beyond what is required  
+- Expands scope (mission creep)  
+- Applies excessive force or unnecessary harm  
+
+3.3 Positive‑Goal Erosion
+Slow degradation of:
+- Safety constraints  
+- Ethical boundaries  
+- Civilian protections  
+- Long‑term welfare considerations  
+
+3.4 Catastrophic Inversion
+The system now:
+- Causes more harm than the threat it was meant to stop  
+- Endangers the very population it was meant to protect  
+
+---
+
+4. 🧠 Mathematical Core (High‑Level)
+
+4.1 Goal Priority Function
+\[
+P(g) = wg \cdot Ig \cdot C_g
+\]
+Where:  
+- \( w_g \) = normative weight  
+- \( I_g \) = importance in mission hierarchy  
+- \( C_g \) = constraint strength  
+
+4.2 Violation Score
+\[
+V = \sum (An \cdot Hp \cdot R)
+\]
+Where:  
+- \( A_n \) = negative‑goal activation intensity  
+- \( H_p \) = predicted harm to positive goals  
+- \( R \) = reversibility factor  
+
+4.3 Override Threshold
+\[
+V > \theta \Rightarrow \text{Override Detected}
+\]
+
+---
+
+5. 🧬 Integration With Your Existing Engines
+
+This engine plugs cleanly into your architectures:
+
+- IIP‑IOSEFE → Detects impractical interlocking harm loops  
+- FRA‑01 → Detects fractal escalation patterns in negative‑goal pursuit  
+- TBTF Engine → Detects systemic risk when negative‑goal pursuit destabilizes institutions  
+- Energy‑Signature Engines → Detect symbolic or behavioral drift toward predatory or extractive modes  
+
+---
+
+6. 📦 Output Object (NGODE‑O)
+
+A structured output:
+
+`
+{
+  "primarygoalintegrity": 0.92,
+  "negativegoalactivation": 0.41,
+  "conflict_index": 0.33,
+  "predictedpositivegoal_harm": 0.27,
+  "override_probability": 0.12,
+  "violation_severity": "Minor Drift",
+  "explanations": [...],
+  "recommended_realignment": [...]
+}
+`
