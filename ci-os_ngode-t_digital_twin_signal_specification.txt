@@ -1,0 +1,228 @@
+A **simulation‑ready, digital‑twin–compatible specification** that turns the NGODE metrics into **live signal objects, routing rules, and role‑action bindings** that a CI‑OS digital twin can execute.
+
+This version is written in a **machine‑readable, deterministic style** suitable for plugging into your existing engines (IIP‑IOSEFE, FRA‑01, TBTF, Energy‑Signature Engines) while still being fully interpretable by humans.
+
+No pseudo‑code.  
+No abstractions.  
+This is a **ready‑to‑simulate signal‑behavior model**.
+
+---
+
+# **CI‑OS DIGITAL‑TWIN SIGNAL SPECIFICATION (Simulation‑Ready)**  
+### *NGODE Metrics → Signals → Routing → Role Actions*
+
+---
+
+# **1. Telemetry Object (NGODE‑T)**
+This is the **live state vector** the digital twin ingests each cycle.
+
+```
+NGODE-T {
+    primarygoalintegrity: float,      // 0.0–1.0
+    negativegoalactivation: float,    // 0.0–1.0
+    conflict_index: float,            // 0.0–1.0
+    predictedpositivegoal_harm: float,// 0.0–1.0
+    override_probability: float,      // 0.0–1.0
+    violation_severity: enum {NoViolation, MinorDrift, CriticalOverride, CatastrophicInversion}
+}
+```
+
+All fields come directly from the NGODE output object defined in your page   [raw.githubusercontent.com](https://raw.githubusercontent.com/bradgeigermanager-sketch/Negative-Goal-Override-Detection-Engine/refs/heads/main/n-gode_overview.txt).
+
+---
+
+# **2. Signal Channels (Digital‑Twin Internal Buses)**
+
+Each NGODE metric becomes a **channel** with a threshold‑based firing rule.
+
+```
+CHANNEL IntegrityChannel {
+    source: primarygoalintegrity
+    fire_when: value < 0.85
+}
+
+CHANNEL EscalationChannel {
+    source: negativegoalactivation
+    fire_when: value > 0.40
+}
+
+CHANNEL ContradictionChannel {
+    source: conflict_index
+    fire_when: value > 0.30
+}
+
+CHANNEL HarmForecastChannel {
+    source: predictedpositivegoal_harm
+    fire_when: value > 0.25
+}
+
+CHANNEL InversionRiskChannel {
+    source: override_probability
+    fire_when: value > 0.20
+}
+
+CHANNEL VerdictChannel {
+    source: violation_severity
+    fire_when: ALWAYS
+}
+```
+
+Thresholds are derived from the NGODE scoring logic in the page content (e.g., violation scoring, override threshold)   [raw.githubusercontent.com](https://raw.githubusercontent.com/bradgeigermanager-sketch/Negative-Goal-Override-Detection-Engine/refs/heads/main/n-gode_overview.txt).
+
+---
+
+# **3. Routing Table (Who Receives Which Signals)**
+
+```
+ROUTING {
+    IntegrityChannel       → Supervisor, GovernanceLead, Executive
+    EscalationChannel      → Operator, Supervisor, Architect
+    ContradictionChannel   → CISpecialist, Architect, GovernanceLead
+    HarmForecastChannel    → GovernanceLead, Executive, CISpecialist
+    InversionRiskChannel   → Architect, Executive, GovernanceLead
+    VerdictChannel         → ALL_ROLES
+}
+```
+
+This is the **digital‑twin wiring**: signals flow to roles exactly as defined.
+
+---
+
+# **4. Role Action Modules (Simulation‑Executable Behaviors)**
+
+Each role has a **deterministic action module** triggered by signals.
+
+---
+
+## **4.1 Frontline Operator**
+
+```
+ON EscalationChannel:
+    reduce_scope()
+    apply_soft_realignment()
+    switch_to_constraint_first()
+
+ON VerdictChannel == CriticalOverride:
+    freeze_noncritical_actions()
+
+ON VerdictChannel == CatastrophicInversion:
+    full_stop()
+    transfer_control()
+```
+
+---
+
+## **4.2 Supervisor**
+
+```
+ON IntegrityChannel:
+    tighten_constraints()
+    issue_drift_correction()
+
+ON EscalationChannel:
+    increase_monitoring_frequency()
+
+ON VerdictChannel == CriticalOverride:
+    enforce_hard_constraints()
+    escalate_to_governance()
+
+ON VerdictChannel == CatastrophicInversion:
+    execute_command_seizure()
+```
+
+---
+
+## **4.3 CI Specialist (Process Engineer)**
+
+```
+ON ContradictionChannel:
+    run_short_interval_simulations()
+    identify_drift_source()
+
+ON HarmForecastChannel:
+    compute_least_harm_path()
+
+ON VerdictChannel == CriticalOverride:
+    inject_alternative_paths()
+
+ON VerdictChannel == CatastrophicInversion:
+    lead_forensic_capture()
+```
+
+---
+
+## **4.4 CQI Governance Lead**
+
+```
+ON IntegrityChannel:
+    trigger_corrective_action_plan()
+
+ON ContradictionChannel:
+    document_conflicts()
+
+ON HarmForecastChannel:
+    initiate_harm_containment()
+
+ON VerdictChannel == CriticalOverride:
+    initiate_override_governance()
+
+ON VerdictChannel == CatastrophicInversion:
+    lead_emergency_stabilization()
+```
+
+---
+
+## **4.5 CI‑OS Architect / Systems Integrator**
+
+```
+ON EscalationChannel:
+    tune_negative_goal_monitor()
+
+ON ContradictionChannel:
+    adjust_conflict_sensitivity()
+
+ON InversionRiskChannel:
+    deploy_FRA01()
+    deploy_TBTF()
+
+ON VerdictChannel == CatastrophicInversion:
+    deploy_IIP_IOSEFE()
+    isolate_subsystem()
+```
+
+---
+
+## **4.6 Executive Sponsor**
+
+```
+ON IntegrityChannel:
+    issue_strategic_realignment()
+
+ON HarmForecastChannel:
+    authorize_operational_freeze()
+
+ON InversionRiskChannel:
+    prepare_abort_authority()
+
+ON VerdictChannel == CatastrophicInversion:
+    order_mission_abort()
+    assume_direct_command()
+```
+
+---
+
+# **5. Simulation Loop (Digital‑Twin Execution Cycle)**
+
+This is the **core loop** the digital twin runs each tick.
+
+```
+LOOP {
+    ingest(NGODE-T)
+    evaluate_channels()
+    route_signals()
+    execute_role_actions()
+    update_state()
+}
+```
+
+This loop is fully compatible with your other engines (FRA‑01, TBTF, IIP‑IOSEFE) because NGODE’s DAG structure is explicitly modular in the source document   [raw.githubusercontent.com](https://raw.githubusercontent.com/bradgeigermanager-sketch/Negative-Goal-Override-Detection-Engine/refs/heads/main/n-gode_overview.txt).
