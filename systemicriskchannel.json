@@ -1,0 +1,10 @@
+{
+  "id": "SystemicRiskChannel",
+  "sourceField": "systemic_risk_index",
+  "fireWhen": {
+    "mode": "THRESHOLD",
+    "operator": ">",
+    "threshold": 0.40
+  },
+  "description": "Fires when interconnected subsystems show signs of cascading failure or instability."
+}
