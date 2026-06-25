@@ -1,0 +1,304 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ci-os.example.org/schema/ngode-simulation-engine.json",
+  "title": "NGODE-CIOS Simulation Engine",
+  "type": "object",
+  "required": ["engine", "telemetryModel", "channels", "routing", "roles"],
+  "properties": {
+    "engine": {
+      "type": "object",
+      "description": "Top-level simulation engine configuration",
+      "required": ["name", "version", "tickIntervalMs"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "NGODE-CIOS-Simulation-Engine"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "tickIntervalMs": {
+          "type": "integer",
+          "minimum": 10,
+          "description": "Simulation tick interval in milliseconds"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "telemetryModel": {
+      "type": "object",
+      "description": "NGODE telemetry state vector (NGODE-T)",
+      "required": [
+        "primarygoalintegrity",
+        "negativegoalactivation",
+        "conflict_index",
+        "predictedpositivegoal_harm",
+        "override_probability",
+        "violation_severity"
+      ],
+      "properties": {
+        "primarygoalintegrity": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "negativegoalactivation": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "conflict_index": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "predictedpositivegoal_harm": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "override_probability": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "violation_severity": {
+          "type": "string",
+          "enum": [
+            "NoViolation",
+            "MinorDrift",
+            "CriticalOverride",
+            "CatastrophicInversion"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "channels": {
+      "type": "array",
+      "description": "Signal channels derived from NGODE metrics",
+      "items": {
+        "type": "object",
+        "required": ["id", "sourceField", "fireWhen"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique channel identifier, e.g., IntegrityChannel"
+          },
+          "sourceField": {
+            "type": "string",
+            "enum": [
+              "primarygoalintegrity",
+              "negativegoalactivation",
+              "conflict_index",
+              "predictedpositivegoal_harm",
+              "override_probability",
+              "violation_severity"
+            ]
+          },
+          "fireWhen": {
+            "type": "object",
+            "description": "Threshold or condition for channel firing",
+            "oneOf": [
+              {
+                "type": "object",
+                "required": ["mode"],
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "const": "ALWAYS"
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "required": ["mode", "operator", "threshold"],
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "const": "THRESHOLD"
+                  },
+                  "operator": {
+                    "type": "string",
+                    "enum": [">", "<", ">=", "<=", "==", "!="]
+                  },
+                  "threshold": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+
+    "routing": {
+      "type": "array",
+      "description": "Routing rules from channels to roles",
+      "items": {
+        "type": "object",
+        "required": ["channelId", "recipients"],
+        "properties": {
+          "channelId": {
+            "type": "string"
+          },
+          "recipients": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Role identifier, e.g., Operator, Supervisor"
+            },
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+
+    "roles": {
+      "type": "array",
+      "description": "Role definitions and their action modules",
+      "items": {
+        "type": "object",
+        "required": ["id", "displayName", "actions"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Role ID, e.g., Operator, Supervisor, CISpecialist"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "actions": {
+            "type": "array",
+            "description": "Signal-triggered behaviors for this role",
+            "items": {
+              "type": "object",
+              "required": ["on", "conditions", "steps"],
+              "properties": {
+                "on": {
+                  "type": "string",
+                  "description": "Channel ID or special 'VerdictChannel'"
+                },
+                "conditions": {
+                  "type": "array",
+                  "description": "Optional additional conditions (e.g., verdict == CriticalOverride)",
+                  "items": {
+                    "type": "object",
+                    "required": ["field", "operator", "value"],
+                    "properties": {
+                      "field": {
+                        "type": "string",
+                        "description": "Telemetry field or violation_severity"
+                      },
+                      "operator": {
+                        "type": "string",
+                        "enum": [">", "<", ">=", "<=", "==", "!="]
+                      },
+                      "value": {
+                        "type": ["number", "string"]
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "steps": {
+                  "type": "array",
+                  "description": "Ordered list of actions this role executes",
+                  "items": {
+                    "type": "object",
+                    "required": ["actionId"],
+                    "properties": {
+                      "actionId": {
+                        "type": "string",
+                        "description": "Symbolic action identifier, e.g., reduce_scope, freeze_noncritical_actions"
+                      },
+                      "params": {
+                        "type": "object",
+                        "description": "Optional parameter bag for the action",
+                        "additionalProperties": true
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "minItems": 1
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+
+    "actionLibrary": {
+      "type": "array",
+      "description": "Optional global registry of all possible actions",
+      "items": {
+        "type": "object",
+        "required": ["id", "description"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Action identifier used in role.steps.actionId"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "ScopeControl",
+              "ConstraintControl",
+              "SimulationControl",
+              "GovernanceControl",
+              "SystemControl",
+              "CommandControl",
+              "ForensicControl"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+
+    "stateModel": {
+      "type": "object",
+      "description": "Optional extended state tracked by the digital twin",
+      "properties": {
+        "lastVerdict": {
+          "type": "string",
+          "enum": [
+            "NoViolation",
+            "MinorDrift",
+            "CriticalOverride",
+            "CatastrophicInversion"
+          ]
+        },
+        "lastTickTimestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "overrideActive": {
+          "type": "boolean"
+        },
+        "missionAborted": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
