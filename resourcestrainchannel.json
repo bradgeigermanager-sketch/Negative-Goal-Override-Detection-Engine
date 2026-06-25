@@ -1,0 +1,10 @@
+{
+  "id": "ResourceStrainChannel",
+  "sourceField": "resource_utilization",
+  "fireWhen": {
+    "mode": "THRESHOLD",
+    "operator": ">",
+    "threshold": 0.80
+  },
+  "description": "Fires when resource utilization (time, personnel, compute, logistics) approaches critical strain."
+}
