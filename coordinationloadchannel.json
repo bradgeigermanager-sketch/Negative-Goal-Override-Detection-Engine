@@ -1,0 +1,10 @@
+{
+  "id": "CoordinationLoadChannel",
+  "sourceField": "coordination_load",
+  "fireWhen": {
+    "mode": "THRESHOLD",
+    "operator": ">",
+    "threshold": 0.60
+  },
+  "description": "Fires when coordination complexity or cross-role synchronization load becomes unstable."
+}
