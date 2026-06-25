@@ -1,0 +1,10 @@
+{
+  "id": "EnvironmentalVolatilityChannel",
+  "sourceField": "environmental_volatility",
+  "fireWhen": {
+    "mode": "THRESHOLD",
+    "operator": ">",
+    "threshold": 0.50
+  },
+  "description": "Fires when external conditions (market, environment, adversary behavior) become volatile."
+}
