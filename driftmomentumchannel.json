@@ -1,0 +1,10 @@
+{
+  "id": "DriftMomentumChannel",
+  "sourceField": "drift_momentum",
+  "fireWhen": {
+    "mode": "THRESHOLD",
+    "operator": ">",
+    "threshold": 0.20
+  },
+  "description": "Fires when the rate of drift acceleration indicates a self-reinforcing deviation pattern."
+}
