@@ -1,0 +1,10 @@
+{
+  "id": "AlignmentDissonanceChannel",
+  "sourceField": "alignment_dissonance",
+  "fireWhen": {
+    "mode": "THRESHOLD",
+    "operator": ">",
+    "threshold": 0.35
+  },
+  "description": "Fires when behavioral patterns diverge from declared goals or mission parameters."
+}
