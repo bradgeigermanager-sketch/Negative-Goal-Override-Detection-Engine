@@ -1,0 +1,10 @@
+{
+  "id": "TempoChannel",
+  "sourceField": "operational_tempo",
+  "fireWhen": {
+    "mode": "THRESHOLD",
+    "operator": ">",
+    "threshold": 0.70
+  },
+  "description": "Fires when operational tempo exceeds sustainable cognitive or organizational bandwidth."
+}
