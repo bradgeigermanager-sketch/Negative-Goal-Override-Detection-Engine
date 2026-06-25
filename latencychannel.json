@@ -1,0 +1,10 @@
+{
+  "id": "LatencyChannel",
+  "sourceField": "system_latency",
+  "fireWhen": {
+    "mode": "THRESHOLD",
+    "operator": ">",
+    "threshold": 0.30
+  },
+  "description": "Fires when system latency or decision lag threatens operational timing integrity."
+}
