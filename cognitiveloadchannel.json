@@ -1,0 +1,10 @@
+{
+  "id": "CognitiveLoadChannel",
+  "sourceField": "cognitive_load",
+  "fireWhen": {
+    "mode": "THRESHOLD",
+    "operator": ">",
+    "threshold": 0.75
+  },
+  "description": "Fires when human or agent cognitive load exceeds safe operational thresholds."
+}
