@@ -1,0 +1,10 @@
+{
+  "id": "TrustDegradationChannel",
+  "sourceField": "trust_degradation",
+  "fireWhen": {
+    "mode": "THRESHOLD",
+    "operator": ">",
+    "threshold": 0.25
+  },
+  "description": "Fires when trust signals between agents or teams degrade beyond acceptable limits."
+}
